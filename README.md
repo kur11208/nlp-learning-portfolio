@@ -1,5 +1,8 @@
 # NLP Learning Portfolio | Pythonで学ぶ自然言語処理
 
+[![Python tests](https://github.com/kur11208/nlp-learning-portfolio/actions/workflows/tests.yml/badge.svg)](https://github.com/kur11208/nlp-learning-portfolio/actions/workflows/tests.yml)
+
+
 Pythonでのデータ前処理から、単語頻度集計、TF-IDFによる類似文検索、機械学習によるテキスト分類・評価までを、**段階的に学習・実装した記録**です。2026年10月の技術面接対策をきっかけに、毎日のコーディング演習と修正履歴を整理しました。
 
 > **位置付け**：学習用の小規模な再現可能デモです。実サービス向けの精度や大規模データでの性能は主張しません。練習時のコードをもとに、対外的に読みやすい構成へリファクタリングしテストを追加しています。
