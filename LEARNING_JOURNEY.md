@@ -8,7 +8,7 @@
 | 10/10〜13 | 手動BoW、`CountVectorizer`、TF-IDF、コサイン類似度、文章検索 | 固定語彙のゼロ埋め、`fit_transform`と`transform`、`argmax`と`max` |
 | 10/17〜19 | `MultinomialNB`で文章分類、Accuracy・Precision・Recall・F1 | 予測ラベルと特徴量の違い、Precision/Recallの分母、`pos_label` |
 | 10/20 | 過学習、データリーク、`train_test_split`、分類の総合演習 | 分割してから訓練データだけで特徴量を学習する |
-| 10/21 | `re.sub`を使った正規表現、`Pipeline`、前処理＋分類の総合演習 | `split`と`strip`の違い、置換処理の順番、Pipelineでもデータ分割が必要なこと |
+| 10/21 | `re.sub`を使った正規表現、`Pipeline`、前処理＋分類の総合演習 | `split`と`strip`の違い、置換処理の順番、Pipelineでもデータ分割が必要なこと |\n| 10/22 | `pd.merge`のinner/left、欠損値・重複行の除去、NumPyの2次元配列・`axis`別平均・閾値条件抽出 | `subset=[...]`と`df[[...]]`の違い、`shape`は属性、`axis`の綴り、結合後にクレンジングする順番 |
 
 ## 学んだことを「実装」に落とす
 
@@ -16,7 +16,7 @@
 2. `Counter`からBoWの考え方を理解し、TF-IDFとコサイン類似度で文章を探す。
 3. 訓練/テスト分割と`Pipeline`を用いてテキストを分類する。
 4. 正解率だけでなく複数の指標で評価し、少数データの限界も説明する。
-5. サンプルを小さなモジュールに整理し、`pytest`で回帰テストする。
+5. 2つの表を結合してから欠損・重複を削除し、NumPyで科目別・学生別の平均を計算する。\n6. サンプルを小さなモジュールに整理し、`pytest`で回帰テストする。
 
 ## 今後の課題
 
