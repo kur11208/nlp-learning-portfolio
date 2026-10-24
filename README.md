@@ -14,6 +14,7 @@ Pythonでのデータ前処理から、単語頻度集計、TF-IDFによる類�
 | 前処理・単語頻度 | Python, `re`, `Counter` | 大小文字・数字・句読点・連続空白の正規化、単語集計 |
 | 文章検索 | `TfidfVectorizer`, `cosine_similarity` | 追加クエリは学習済みベクトライザの `transform()` で変換し、類似度最大の文を返す |
 | データ集計 | pandas | 欠損値、重複削除、ラベル別の集計 |\n| 2表の結合・点数分析 | pandas, NumPy | left結合→欠損・重複削除→部門平均→2次元配列でaxis別平均・条件抽出 |
+| CSVからの文章分類 | pandas, scikit-learn | CSVの状態確認、欠損・重複の除去、学習/テスト分割、4指標による評価 |
 | テキスト分類 | `train_test_split`, `Pipeline`, `MultinomialNB` | 訓練データだけで特徴量を学習し、未知のテストデータで評価 |
 | 評価 | Accuracy, Precision, Recall, F1 | 学習データとテストデータの差、クラス指定、少数データの限界を確認 |
 
@@ -31,6 +32,8 @@ python -m examples.text_preprocessing
 python -m examples.tfidf_search
 python -m examples.pandas_review_analysis
 python -m examples.review_classifier
+# review_text と label を含むCSVを指定する場合:
+python -m examples.csv_review_classifier path/to/reviews.csv
 python -m pytest -q
 ```
 
@@ -45,7 +48,7 @@ match: dog eats meat (cosine similarity: 1.000)
 
 16件の小さなレビューを使った文章分類では、ある再現可能な分割（`random_state=42`）に対し、**Train Accuracy 1.00 / Test Accuracy 0.25** となりました。これは良い精度ではなく、データが少ない・未知の表現に弱いといった限界を議論するための観察です。単一の分割だけで過学習と断定することもできません。
 
-初期の5テストに加え、10/22には表結合・欠損/重複削除・NumPy集計を検証する3テストを追加しました（この追加3件はローカル実行で成功）。GitHub ActionsでPythonテストを実行する構成です。
+初期の5テストに加え、10/22には表結合・欠損/重複削除・NumPy集計を検証する3テストを追加しました。10/24にはCSVの品質確認から文章分類までの通し演習を独立した例に整理し、CSV検査・分類処理・入力列検証の3テストを追加しました（追加3件はローカル実行で成功）。GitHub ActionsでPythonテストを実行する構成です。
 
 ## リポジトリ内の構成
 
@@ -58,10 +61,17 @@ match: dog eats meat (cosine similarity: 1.000)
 │   ├── text_preprocessing.py
 │   ├── tfidf_search.py
 │   ├── pandas_review_analysis.py
-│   └── review_classifier.py
+│   ├── review_classifier.py
+│   └── csv_review_classifier.py
 └── tests/
     └── test_examples.py
 ```
+
+## CSVレビュー分類演習（10/24）
+
+`examples/csv_review_classifier.py` は `review_text` と `label`（`positive` / `negative`）列を含むCSVを受け取り、元データの欠損・完全重複を確認してから学習・テストへ分割し、TF-IDF + MultinomialNBのPipelineを学習・評価します。`review_id` のような識別子はモデル入力に使いません。サンプル用CSVはテスト時に生成するため、利用する際は自身のCSVファイルを指定してください。
+
+**限界**：小規模な人工データへの単一hold-out評価は不安定です。実際の学習演習（別の36行の教材CSV）では、32行にクレンジングした後、8行のテストで4指標がいずれも0.0となるケースを観察しました。この結果は学習者のローカル実行ログに基づき、公開コードのデータと同一ではなく、このリポジトリだけで再現できる数値ではありません。評価結果の改善は未検証です。
 
 ## 技術的に意識したこと
 
