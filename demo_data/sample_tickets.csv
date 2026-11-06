@@ -1,0 +1,49 @@
+message,category,channel,response_minutes
+I was charged twice for my monthly subscription,billing,email,42
+Please refund the duplicate payment on my invoice,billing,chat,18
+My credit card was billed after cancellation,billing,email,65
+Where can I download the receipt for my purchase,billing,chat,16
+The subscription price on my bill is incorrect,billing,email,44
+I need an invoice with my company address,billing,chat,25
+The payment confirmation email has the wrong amount,billing,email,36
+Can I change the billing date for my plan,billing,chat,21
+My refund still has not arrived in my bank account,billing,email,72
+I want to update the credit card used for payment,billing,chat,24
+The annual subscription renewal charge was unexpected,billing,email,48
+Please explain the extra fee listed on the statement,billing,chat,29
+How do I apply a discount code to my invoice,billing,email,38
+My transaction failed but the bank took the money,billing,chat,34
+I need a copy of last month payment receipt,billing,email,33
+The subscription was cancelled but I got another bill,billing,chat,31
+Why is there a tax charge on my invoice,billing,email,52
+Can I switch from monthly payments to yearly billing,billing,chat,26
+A refund was approved but my card balance did not change,billing,email,61
+Please correct the customer name printed on the invoice,billing,chat,22
+I have a question about the subscription renewal fee,billing,email,43
+The billing portal says the payment is overdue,billing,chat,19
+I need help finding the latest payment receipt,billing,email,39
+The price on the invoice differs from my plan,billing,chat,28
+The mobile app crashes whenever I open the settings page,technical,email,40
+I cannot log in because the website shows an error,technical,chat,14
+The video player freezes after a few seconds,technical,email,45
+The dashboard loads slowly and then stops responding,technical,chat,30
+My password reset link does not work,technical,email,34
+The browser shows a blank page after I sign in,technical,chat,22
+I keep getting a network connection error,technical,email,50
+The application closes when I upload a file,technical,chat,18
+The search feature returns an empty screen,technical,email,43
+Notifications are not appearing on my phone,technical,chat,17
+The latest update broke the login screen,technical,email,37
+I cannot hear audio during video playback,technical,chat,23
+The site does not load on my laptop browser,technical,email,46
+The app freezes when I tap the profile icon,technical,chat,15
+My account settings are not saving changes,technical,email,29
+The upload button shows a server error,technical,chat,20
+The streaming video keeps buffering at night,technical,email,49
+The password field is missing from the login form,technical,chat,24
+The software update caused a startup crash,technical,email,54
+I get a timeout when opening the user dashboard,technical,chat,21
+The file download is stuck at zero percent,technical,email,39
+The application cannot connect to the service,technical,chat,19
+I cannot reset my account password in the app,technical,email,42
+The web interface stops responding after login,technical,chat,27
