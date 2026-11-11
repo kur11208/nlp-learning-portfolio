@@ -1,6 +1,4 @@
-"""面接デモ用アダプター。既存の文章分類ロジックは変更せず、画面用結果に変換する。"""
-
-from __future__ import annotations
+"""NLPの学習内容を使って、デモ画面に結果を渡すコード（AI整備版）。"""
 
 from pathlib import Path
 
@@ -12,69 +10,94 @@ from sklearn.pipeline import Pipeline
 
 from examples.support_ticket_comparison import CATEGORIES, inspect_tickets
 
+
 ROOT = Path(__file__).resolve().parent
 SAMPLE_CSV = ROOT / "demo_data" / "sample_tickets.csv"
 SPLIT_SEED = 3
 TEST_SIZE = 0.25
 
 
-def build_bundle(csv_path: Path = SAMPLE_CSV) -> tuple[dict, dict]:
-    """学習用サンプルを同じ訓練/テスト分割で比較し、表示データと学習済みモデルを作る。"""
-    profile, cleaned, _ = inspect_tickets(csv_path)
-    if set(cleaned["category"].unique()) != set(CATEGORIES):
+def build_bundle(csv_path=SAMPLE_CSV):
+    """同じデータを使ってBoWとTF-IDFを比較する。"""
+    _, df, _ = inspect_tickets(csv_path)
+
+    if set(df["category"].unique()) != set(CATEGORIES):
         raise ValueError("Demo requires exactly billing and technical categories")
 
-    # 学習データだけで語彙とIDFを学習する。テストデータをfit()に入れない。
+    # 先に分割する。ベクトル化のfitは訓練データだけに行う。
     train_x, test_x, train_y, test_y = train_test_split(
-        cleaned["message"], cleaned["category"],
-        test_size=TEST_SIZE, random_state=SPLIT_SEED, stratify=cleaned["category"],
+        df["message"],
+        df["category"],
+        test_size=TEST_SIZE,
+        random_state=SPLIT_SEED,
+        stratify=df["category"],
     )
 
     report = {
         "dataset": "固定の架空英語問い合わせ（デモ専用・実績値ではありません）",
-        "sample_count": int(len(cleaned)),
+        "sample_count": int(len(df)),
         "train_count": int(len(train_x)),
         "test_count": int(len(test_x)),
         "seed": SPLIT_SEED,
         "labels": CATEGORIES,
         "models": {},
     }
-    fitted = {}
-    for name, vectorizer in (
+    models = {}
+
+    # 分割方法と分類器を揃え、ベクトル化の方法だけ変える。
+    for name, vectorizer in [
         ("BoW", CountVectorizer()),
         ("TF-IDF", TfidfVectorizer()),
-    ):
-        # 既存の support_ticket_comparison.py と同じモデル構成に統一する。
-        pipeline = Pipeline([
+    ]:
+        pipe = Pipeline([
             ("features", vectorizer),
             ("classifier", MultinomialNB()),
         ])
-        pipeline.fit(train_x, train_y)
-        predicted = pipeline.predict(test_x)
+
+        pipe.fit(train_x, train_y)
+        pred = pipe.predict(test_x)
+
         scores = classification_report(
-            test_y, predicted, labels=CATEGORIES, output_dict=True, zero_division=0,
+            test_y, pred,
+            labels=CATEGORIES,
+            output_dict=True,
+            zero_division=0,
         )
-        mistakes = [
-            {"text": str(text), "actual": str(actual), "predicted": str(guess)}
-            for text, actual, guess in zip(test_x, test_y, predicted)
-            if actual != guess
-        ]
+
+        # 正解と予測が違った文章を取り出す。
+        mistakes = []
+        for text, actual, guess in zip(test_x, test_y, pred):
+            if actual != guess:
+                mistakes.append({
+                    "text": str(text),
+                    "actual": str(actual),
+                    "predicted": str(guess),
+                })
+
         report["models"][name] = {
-            "accuracy": float(accuracy_score(test_y, predicted)),
+            "accuracy": float(accuracy_score(test_y, pred)),
             "precision_macro": float(scores["macro avg"]["precision"]),
             "recall_macro": float(scores["macro avg"]["recall"]),
             "f1_macro": float(scores["macro avg"]["f1-score"]),
-            "confusion_matrix": confusion_matrix(test_y, predicted, labels=CATEGORIES).tolist(),
+            "confusion_matrix": confusion_matrix(
+                test_y, pred, labels=CATEGORIES
+            ).tolist(),
             "mistakes": mistakes[:8],
         }
-        fitted[name] = pipeline
-    return report, fitted
+        models[name] = pipe
+
+    return report, models
 
 
-def predict_message(models: dict, message: str) -> dict:
-    """自由入力を、訓練済みの2つのモデルで推論する。これは正解保証ではない。"""
+def predict_message(models, message):
+    """画面で入力された英文を2つのモデルで分類する。"""
     if not isinstance(message, str) or not message.strip():
         raise ValueError("英文の問い合わせを入力してください")
     if len(message) > 500:
         raise ValueError("入力は500文字以内にしてください")
-    return {name: str(model.predict([message])[0]) for name, model in models.items()}
+
+    result = {}
+    for name, pipe in models.items():
+        pred = pipe.predict([message])
+        result[name] = str(pred[0])
+    return result
