@@ -60,6 +60,7 @@ function renderReport(report) {
 async function classify() {
   const button = $("predict");
   button.disabled = true;
+  $("message").disabled = true;
   $("prediction-status").textContent = "分類中…";
   try {
     const response = await fetch("/api/predict", {
@@ -82,6 +83,7 @@ async function classify() {
     $("prediction-status").textContent = err.message;
   } finally {
     button.disabled = false;
+    $("message").disabled = false;
   }
 }
 
@@ -96,7 +98,8 @@ async function loadReport() {
 }
 
 $("predict").addEventListener("click", classify);
-document.querySelectorAll(".example").forEach((button) =>
-  button.addEventListener("click", () => { $("message").value = button.dataset.text; classify(); })
-);
+$("message").addEventListener("change", () => {
+  $("prediction-results").replaceChildren();
+  $("prediction-status").textContent = "「分類する」を押すと2つのモデルの予測を表示します。";
+});
 loadReport();
