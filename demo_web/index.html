@@ -17,13 +17,15 @@
     </header>
     <main>
       <section class="panel" aria-labelledby="input-title">
-        <div class="section-head"><span class="step">01</span><div><h2 id="input-title">文章を入力して分類</h2><p>半角英語の問い合わせを入力してください。未知の文章では誤判定する可能性があります。</p></div></div>
-        <label for="message">問い合わせ文（英語・500文字まで）</label>
-        <textarea id="message" rows="3" maxlength="500">Please refund my duplicate payment</textarea>
+        <div class="section-head"><span class="step">01</span><div><h2 id="input-title">問い合わせ例を選んで分類</h2><p>用意した英文の例を選択し、2つの学習済みモデルで実際に分類します。</p></div></div>
+        <label for="message">問い合わせの例（英語）</label>
+        <select id="message">
+          <option value="Please refund my duplicate payment">請求の例：Please refund my duplicate payment</option>
+          <option value="The app crashes when I log in">技術の例：The app crashes when I log in</option>
+          <option value="The search feature returns an empty screen">誤分類の例：The search feature returns an empty screen</option>
+        </select>
         <div class="toolbar">
           <button id="predict" type="button" class="primary">分類する</button>
-          <button type="button" class="example" data-text="My invoice has an extra charge">請求の例</button>
-          <button type="button" class="example" data-text="The app crashes when I log in">技術の例</button>
         </div>
         <div id="prediction-status" aria-live="polite" class="subtle">「分類する」を押すと2つのモデルの予測を表示します。</div>
         <div id="prediction-results" class="prediction-grid"></div>
