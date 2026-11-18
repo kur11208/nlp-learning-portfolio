@@ -1,26 +1,3 @@
-"""
-ポート技術面接用：NLPの主要処理を1ファイルで説明できるようにした版（AI整備）。
-==============================================================
-このファイルは既存の demo_model.py ＋ demo.py ＋ CSV読込処理をまとめたものです。
-元のデモのファイルは変更しません。実行しても同じ demo_web/ の画面を使います。
-
-【面接官に見せる順番】
-  STEP 1: CSVデータの読込・前処理
-  STEP 2: 学習用36件とテスト用12件の分割
-  STEP 3: BoWとTF-IDFの数値化 ＋ ナイーブベイズで学習
-  STEP 4: Accuracy / Precision / Recall / F1 と誤分類の確認
-  STEP 5: 新しい文章の分類
-  STEP 6: Web画面との通信（HTTP / JSON）
-
-【使い方】
-  python PORT_INTERVIEW_ONE_FILE.py         # 従来と同じWebデモを起動
-  python PORT_INTERVIEW_ONE_FILE.py --check # 画面を開かず評価結果を確認
-
-【制作範囲】
-  公開用コードの記述・整備には生成AIを活用。
-  本人が学習したNLPの仕組みを説明するための閲覧用コードです。
-  AI生成の架空データを使った学習用デモであり、実サービス向けの精度ではありません。
-"""
 
 from __future__ import annotations
 
